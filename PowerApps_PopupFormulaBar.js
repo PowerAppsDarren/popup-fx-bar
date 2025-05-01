@@ -77,6 +77,7 @@
 
   const model = getFxEditorModel();
   window.fxModel = model;
+  window.fxSelector = document.querySelector("#powerapps-property-combo-box");
   window.POPUP_BAR_LOGGING = false;
 
   if (!model) return alert("Formula model not found.");
@@ -92,6 +93,7 @@
   // Initial content
   textarea.value = model.getValue();
 
+  let selectedProperty = window.fxSelector.attributes["value"].value;
   let ignoreChange = false;
   let disposeModelChange = model.onDidChangeModelContent((event) => {
     if (window.POPUP_BAR_LOGGING)
@@ -106,9 +108,16 @@
     //and instead change set the Monaco value again (as this could
     //be a synchronisation event)
     if (event.isFlush) {
-      ignoreChange = true;
-      model.setValue(textarea.value);
-      ignoreChange = false;
+      //Only revert change IF selectedProperty hasnt changed.
+      if (selectedProperty == window.fxSelector.attributes["value"].value) {
+        //Update text area
+        ignoreChange = true;
+        model.setValue(textarea.value);
+        ignoreChange = false;
+        return;
+      } else {
+        selectedProperty = window.fxSelector.attributes["value"].value;
+      }
     }
 
     //Update text area
