@@ -76,6 +76,9 @@
   };
 
   const model = getFxEditorModel();
+  window.fxModel = model;
+  window.POPUP_BAR_LOGGING = false;
+
   if (!model) return alert("Formula model not found.");
 
   const popup = window.open("", "FormulaPopup", "width=800,height=400");
@@ -89,17 +92,44 @@
   // Initial content
   textarea.value = model.getValue();
 
-  // Send changes to Monaco on input
-  textarea.addEventListener("input", () => {
-    model.setValue(textarea.value);
-  });
+  let ignoreChange = false;
+  let disposeModelChange = model.onDidChangeModelContent((event) => {
+    if (window.POPUP_BAR_LOGGING)
+      console.info({ modelDidChangeContent: event });
+    //Ignore changes when we are setting them ourselves
+    if (ignoreChange) return;
 
-  // Sync back if edited externally in Power Apps (poll-based)
-  const syncInterval = setInterval(() => {
-    if (popup.closed) return clearInterval(syncInterval);
+    //Stop syncing after popup is closed
+    if (popup.closed) return;
+
+    //If isFlush is set, we will ignore changes to text area
+    //and instead change set the Monaco value again (as this could
+    //be a synchronisation event)
+    if (event.isFlush) {
+      ignoreChange = true;
+      model.setValue(textarea.value);
+      ignoreChange = false;
+    }
+
+    //Update text area
     const current = model.getValue();
     if (textarea.value !== current) {
       textarea.value = current;
     }
-  }, 200); // adjust for perf/speed trade-off
+  });
+
+  // Send changes to Monaco on input
+  textarea.addEventListener("input", () => {
+    ignoreChange = true;
+    model.setValue(textarea.value);
+    ignoreChange = false;
+  });
+
+  //Cleanup if popup closes
+  const cleanupInterval = setInterval(() => {
+    if (popup.closed) {
+      disposeModelChange.dispose();
+      clearInterval(cleanupInterval);
+    }
+  }, 500);
 })();
