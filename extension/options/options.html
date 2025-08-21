@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Formula Editor Settings</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #667eea;
+      font-size: 24px;
+      margin-bottom: 24px;
+    }
+    .setting {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #374151;
+    }
+    input, select {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    input[type="number"] {
+      width: 100px;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #5a67d8;
+    }
+    .saved {
+      color: #10b981;
+      margin-left: 12px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Formula Editor Settings</h1>
+  
+  <div class="setting">
+    <label for="window-width">Window Width (px)</label>
+    <input type="number" id="window-width" min="400" max="1920" value="800">
+  </div>
+  
+  <div class="setting">
+    <label for="window-height">Window Height (px)</label>
+    <input type="number" id="window-height" min="300" max="1080" value="600">
+  </div>
+  
+  <div class="setting">
+    <label for="font-size">Default Font Size</label>
+    <select id="font-size">
+      <option value="12">12px</option>
+      <option value="14">14px</option>
+      <option value="16">16px</option>
+      <option value="18">18px</option>
+      <option value="20">20px</option>
+    </select>
+  </div>
+  
+  <div class="setting">
+    <label for="debounce-delay">Sync Delay (ms)</label>
+    <input type="number" id="debounce-delay" min="100" max="1000" value="300">
+  </div>
+  
+  <button id="save">Save Settings</button>
+  <span class="saved" id="saved-message">Settings saved!</span>
+  
+  <script src="options.js"></script>
+</body>
+</html>

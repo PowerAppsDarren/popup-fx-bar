@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PowerApps Formula Editor</title>
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <div id="editor-container">
+    <div id="header">
+      <div class="header-left">
+        <span id="property-name">Formula Editor</span>
+        <span id="status" class="status">● Connected</span>
+      </div>
+      <div class="header-right">
+        <button id="settings-btn" title="Settings">⚙️</button>
+        <button id="fullscreen-btn" title="Fullscreen">⛶</button>
+        <button id="close-btn" title="Close">✕</button>
+      </div>
+    </div>
+    
+    <div id="toolbar">
+      <button id="undo-btn" title="Undo (Ctrl+Z)">↶</button>
+      <button id="redo-btn" title="Redo (Ctrl+Y)">↷</button>
+      <span class="separator"></span>
+      <button id="copy-btn" title="Copy (Ctrl+C)">📋</button>
+      <button id="paste-btn" title="Paste (Ctrl+V)">📄</button>
+      <span class="separator"></span>
+      <button id="search-btn" title="Find (Ctrl+F)">🔍</button>
+      <button id="replace-btn" title="Replace (Ctrl+H)">🔄</button>
+      <span class="separator"></span>
+      <select id="font-size">
+        <option value="12">12px</option>
+        <option value="14" selected>14px</option>
+        <option value="16">16px</option>
+        <option value="18">18px</option>
+        <option value="20">20px</option>
+      </select>
+      <button id="wrap-btn" title="Toggle Word Wrap">⏎</button>
+      <span class="flex-spacer"></span>
+      <span id="char-count">0 chars</span>
+      <span id="line-info">Ln 1, Col 1</span>
+    </div>
+    
+    <div id="editor-wrapper">
+      <textarea 
+        id="formula-editor" 
+        placeholder="Enter your Power Fx formula here..."
+        spellcheck="false"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+      ></textarea>
+    </div>
+    
+    <div id="footer">
+      <div class="footer-left">
+        <span id="sync-status">Synced</span>
+      </div>
+      <div class="footer-right">
+        <span id="last-saved">Auto-saving...</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Search/Replace Modal -->
+  <div id="search-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Find & Replace</h3>
+        <button class="close-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="search-input" placeholder="Find...">
+        <input type="text" id="replace-input" placeholder="Replace with...">
+        <div class="modal-buttons">
+          <button id="find-next">Find Next</button>
+          <button id="replace-one">Replace</button>
+          <button id="replace-all">Replace All</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="editor.js"></script>
+</body>
+</html>
