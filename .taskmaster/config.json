@@ -1,0 +1,11 @@
+{
+  "projectName": "PowerApps Popup Formula Bar",
+  "projectType": "javascript",
+  "description": "Browser extension/bookmarklet for PowerApps formula editing",
+  "mainLanguage": "javascript",
+  "framework": "vanilla",
+  "testFramework": "jest",
+  "buildTool": "webpack",
+  "packageManager": "npm",
+  "version": "0.1.0"
+}

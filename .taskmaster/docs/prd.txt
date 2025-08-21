@@ -1,0 +1,116 @@
+# PowerApps Popup Formula Bar - Refactoring & Security Fix PRD
+
+## Project Overview
+Refactor the PowerApps Popup Formula Bar to address critical security vulnerabilities, improve code quality, and implement a modular architecture as documented in the comprehensive code review.
+
+## Current State
+- Single monolithic JavaScript file with 144 lines
+- Critical XSS vulnerability using document.write()
+- No error handling or null checks
+- Memory leaks and performance issues
+- No build process or testing framework
+
+## Goals
+1. Fix critical security vulnerability (XSS)
+2. Implement proper error handling
+3. Modularize code into maintainable components
+4. Add comprehensive testing
+5. Improve performance and memory management
+
+## Requirements
+
+### Phase 1: Critical Security & Stability Fixes (IMMEDIATE)
+- Replace document.write() with secure DOM manipulation
+- Add null/undefined checks for all property accesses
+- Implement proper error handling with user-friendly messages
+- Fix memory leaks in cleanup handlers
+
+### Phase 2: Code Quality & Performance
+- Add input debouncing (300ms) to prevent excessive updates
+- Implement proper event listener cleanup
+- Add browser compatibility checks
+- Create configuration system for debug logging
+
+### Phase 3: Modular Architecture
+- Split code into three modules:
+  - finder.js: React Fiber traversal and Monaco editor discovery
+  - sync.js: Bidirectional synchronization logic
+  - ui.js: Popup window creation and management
+- Implement module loader and dependency management
+- Create main entry point that orchestrates modules
+
+### Phase 4: Testing & Build Process
+- Set up Jest testing framework
+- Create unit tests for each module (80% coverage target)
+- Add integration tests for popup synchronization
+- Implement build process with webpack/rollup
+- Add linting with ESLint
+
+### Phase 5: Enhancement & Distribution
+- TypeScript migration for type safety
+- Create browser extension manifest
+- Add configuration UI for settings
+- Implement keyboard shortcuts
+- Create user documentation
+
+## Technical Specifications
+
+### Security Requirements
+- No use of document.write() or innerHTML with unsanitized content
+- Content Security Policy headers in popup window
+- Validate all inputs before processing
+- Sanitize any user-provided content
+
+### Performance Requirements
+- Debounce input events (300ms)
+- Limit React Fiber traversal depth (max 20)
+- Clean up all event listeners on popup close
+- Prevent memory leaks with proper disposal
+
+### Browser Support
+- Chrome/Edge (Chromium) - Primary
+- Firefox - Secondary
+- Safari - Nice to have
+
+### Code Quality Standards
+- ESLint configuration following Airbnb style guide
+- Comprehensive JSDoc comments
+- Error messages must be user-friendly
+- All functions must have error handling
+
+## Success Metrics
+- Zero security vulnerabilities
+- No memory leaks detectable in DevTools
+- 80% test coverage
+- Sub-100ms response time for text updates
+- Zero console errors in normal usage
+
+## Constraints
+- Must maintain compatibility with current PowerApps versions
+- Cannot modify PowerApps application code
+- Must work as bookmarklet or browser extension
+- File size under 100KB minified
+
+## Dependencies
+- No external runtime dependencies for core functionality
+- Development dependencies:
+  - Jest for testing
+  - Webpack/Rollup for bundling
+  - ESLint for linting
+  - TypeScript (Phase 5)
+
+## Deliverables
+1. Secure, refactored codebase
+2. Comprehensive test suite
+3. Build and deployment scripts
+4. User documentation
+5. Developer documentation
+
+## Timeline
+- Phase 1: Immediate (Today)
+- Phase 2: 2-3 days
+- Phase 3: 1 week
+- Phase 4: 1 week
+- Phase 5: 2 weeks
+
+Total estimated time: 4-5 weeks for complete refactoring

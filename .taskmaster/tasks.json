@@ -1,0 +1,454 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Fix Critical XSS Vulnerability in popup window creation",
+      "description": "Replace document.write() on lines 86-89 with secure DOM manipulation to prevent XSS attacks",
+      "phase": 1,
+      "priority": "CRITICAL",
+      "status": "pending",
+      "estimatedTime": "30 minutes",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "No use of document.write() or innerHTML with unsanitized content",
+        "Popup window created using createElement and appendChild",
+        "Content Security Policy headers added"
+      ]
+    },
+    {
+      "id": "2", 
+      "title": "Add null/undefined checks for window.fxSelector access",
+      "description": "Add defensive checks before accessing window.fxSelector.attributes['value'].value on line 96",
+      "phase": 1,
+      "priority": "CRITICAL",
+      "status": "pending",
+      "estimatedTime": "20 minutes",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "All property accesses have null checks",
+        "Graceful handling when elements are missing",
+        "No crashes from undefined properties"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Implement proper error handling with user messages",
+      "description": "Replace empty catch blocks on lines 25, 49 with proper error logging and user-friendly messages",
+      "phase": 1,
+      "priority": "CRITICAL", 
+      "status": "pending",
+      "estimatedTime": "15 minutes",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "All errors are logged with console.error",
+        "User-friendly error messages displayed",
+        "Stack traces preserved for debugging"
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Fix memory leak in cleanup interval",
+      "description": "Improve cleanup mechanism on lines 137-143 to prevent memory leaks",
+      "phase": 2,
+      "priority": "HIGH",
+      "status": "pending",
+      "estimatedTime": "45 minutes",
+      "dependencies": ["1", "2", "3"],
+      "acceptanceCriteria": [
+        "Cleanup interval has maximum timeout (5 minutes)",
+        "All event listeners properly disposed",
+        "No detectable memory leaks in DevTools"
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Add input debouncing for performance",
+      "description": "Implement 300ms debouncing on textarea input event (lines 131-135) to prevent excessive updates",
+      "phase": 2,
+      "priority": "HIGH",
+      "status": "pending", 
+      "estimatedTime": "20 minutes",
+      "dependencies": ["1", "2", "3"],
+      "acceptanceCriteria": [
+        "300ms debounce delay on input",
+        "Smooth typing experience maintained",
+        "Reduced number of sync operations"
+      ]
+    },
+    {
+      "id": "6",
+      "title": "Remove global variable pollution",
+      "description": "Refactor window.fxModel and window.fxSelector to use proper encapsulation",
+      "phase": 2,
+      "priority": "HIGH",
+      "status": "pending",
+      "estimatedTime": "30 minutes",
+      "dependencies": ["4", "5"],
+      "acceptanceCriteria": [
+        "No global variables exposed",
+        "State managed within closure",
+        "Debug access via dedicated API if needed"
+      ]
+    },
+    {
+      "id": "7",
+      "title": "Implement race condition prevention",
+      "description": "Add queue-based sync manager to prevent update conflicts during rapid typing",
+      "phase": 2,
+      "priority": "HIGH",
+      "status": "pending",
+      "estimatedTime": "1 hour",
+      "dependencies": ["5", "6"],
+      "acceptanceCriteria": [
+        "Queue-based update system",
+        "No lost updates during rapid typing",
+        "Proper async operation handling"
+      ]
+    },
+    {
+      "id": "8",
+      "title": "Create modelFinder.js module",
+      "description": "Extract React Fiber traversal logic into separate module for finding Monaco editor",
+      "phase": 3,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "1 hour",
+      "dependencies": ["7"],
+      "acceptanceCriteria": [
+        "Standalone module for model finding",
+        "Clear API with find() method",
+        "Error handling and timeout protection"
+      ]
+    },
+    {
+      "id": "9",
+      "title": "Create syncManager.js module",
+      "description": "Extract bidirectional synchronization logic into dedicated module",
+      "phase": 3,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "1.5 hours",
+      "dependencies": ["8"],
+      "acceptanceCriteria": [
+        "Handles all sync between popup and Monaco",
+        "Event listener management",
+        "Conflict resolution logic"
+      ]
+    },
+    {
+      "id": "10",
+      "title": "Create popupManager.js module",
+      "description": "Extract popup window creation and management into separate module",
+      "phase": 3,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "1 hour",
+      "dependencies": ["8"],
+      "acceptanceCriteria": [
+        "Handles popup lifecycle",
+        "Window communication management",
+        "Fallback for popup blockers"
+      ]
+    },
+    {
+      "id": "11",
+      "title": "Create config.js module",
+      "description": "Implement configuration system for debug logging and user preferences",
+      "phase": 3,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "45 minutes",
+      "dependencies": ["8", "9", "10"],
+      "acceptanceCriteria": [
+        "Centralized configuration",
+        "Debug logging controls",
+        "User preference storage"
+      ]
+    },
+    {
+      "id": "12",
+      "title": "Create main.js orchestrator",
+      "description": "Implement main entry point that coordinates all modules",
+      "phase": 3,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "30 minutes",
+      "dependencies": ["8", "9", "10", "11"],
+      "acceptanceCriteria": [
+        "Clean module initialization",
+        "Dependency injection",
+        "Error boundary implementation"
+      ]
+    },
+    {
+      "id": "13",
+      "title": "Replace alert() with non-blocking notifications",
+      "description": "Implement toast notifications or inline messages instead of blocking alerts",
+      "phase": 3,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "45 minutes",
+      "dependencies": ["10"],
+      "acceptanceCriteria": [
+        "Non-blocking error messages",
+        "Visual notification system",
+        "Auto-dismiss after timeout"
+      ]
+    },
+    {
+      "id": "14",
+      "title": "Add keyboard shortcuts support",
+      "description": "Implement Ctrl+S to save, Escape to close, F11 for fullscreen",
+      "phase": 3,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "30 minutes",
+      "dependencies": ["10", "11"],
+      "acceptanceCriteria": [
+        "Common keyboard shortcuts work",
+        "Configurable key bindings",
+        "No conflicts with PowerApps shortcuts"
+      ]
+    },
+    {
+      "id": "15",
+      "title": "Add browser compatibility layer",
+      "description": "Implement feature detection and fallbacks for Chrome, Edge, Firefox",
+      "phase": 3,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "1 hour",
+      "dependencies": ["12"],
+      "acceptanceCriteria": [
+        "Works in Chrome/Edge",
+        "Works in Firefox",
+        "Graceful degradation for unsupported features"
+      ]
+    },
+    {
+      "id": "16",
+      "title": "Setup Jest testing framework",
+      "description": "Initialize Jest and create test structure for all modules",
+      "phase": 4,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "1 hour",
+      "dependencies": ["12"],
+      "acceptanceCriteria": [
+        "Jest configured and working",
+        "Test file structure created",
+        "npm test command configured"
+      ]
+    },
+    {
+      "id": "17",
+      "title": "Write unit tests for modelFinder",
+      "description": "Create comprehensive unit tests for React Fiber traversal logic",
+      "phase": 4,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "2 hours",
+      "dependencies": ["16"],
+      "acceptanceCriteria": [
+        "80% code coverage",
+        "Edge cases tested",
+        "Mock React Fiber structures"
+      ]
+    },
+    {
+      "id": "18",
+      "title": "Write unit tests for syncManager",
+      "description": "Test bidirectional synchronization logic",
+      "phase": 4,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "2 hours",
+      "dependencies": ["16"],
+      "acceptanceCriteria": [
+        "Test sync in both directions",
+        "Test conflict resolution",
+        "Test error scenarios"
+      ]
+    },
+    {
+      "id": "19",
+      "title": "Write integration tests",
+      "description": "Test complete flow from finding model to syncing content",
+      "phase": 4,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "3 hours",
+      "dependencies": ["17", "18"],
+      "acceptanceCriteria": [
+        "End-to-end flow tested",
+        "Performance benchmarks",
+        "Memory leak detection"
+      ]
+    },
+    {
+      "id": "20",
+      "title": "Setup Webpack build system",
+      "description": "Configure Webpack for bundling, minification, and source maps",
+      "phase": 4,
+      "priority": "MEDIUM",
+      "status": "pending",
+      "estimatedTime": "1.5 hours",
+      "dependencies": ["12"],
+      "acceptanceCriteria": [
+        "Development and production builds",
+        "Source maps for debugging",
+        "Bundle size < 100KB"
+      ]
+    },
+    {
+      "id": "21",
+      "title": "Setup ESLint with Airbnb config",
+      "description": "Configure linting for code quality and consistency",
+      "phase": 4,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "30 minutes",
+      "dependencies": ["20"],
+      "acceptanceCriteria": [
+        "ESLint configured",
+        "Pre-commit hooks setup",
+        "All code passes linting"
+      ]
+    },
+    {
+      "id": "22",
+      "title": "Create user documentation",
+      "description": "Write comprehensive user guide with screenshots",
+      "phase": 4,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "2 hours",
+      "dependencies": ["19"],
+      "acceptanceCriteria": [
+        "Installation guide",
+        "Usage instructions",
+        "Troubleshooting section"
+      ]
+    },
+    {
+      "id": "23",
+      "title": "Create developer documentation",
+      "description": "Write API docs and contribution guidelines",
+      "phase": 4,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "1.5 hours",
+      "dependencies": ["19"],
+      "acceptanceCriteria": [
+        "API documentation",
+        "Architecture overview",
+        "Contribution guidelines"
+      ]
+    },
+    {
+      "id": "24",
+      "title": "Setup TypeScript configuration",
+      "description": "Initialize TypeScript and create type definitions",
+      "phase": 5,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "1 hour",
+      "dependencies": ["20"],
+      "acceptanceCriteria": [
+        "TypeScript configured",
+        "Build process updated",
+        "Type definitions created"
+      ]
+    },
+    {
+      "id": "25",
+      "title": "Migrate modules to TypeScript",
+      "description": "Convert all JavaScript modules to TypeScript with proper types",
+      "phase": 5,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "4 hours",
+      "dependencies": ["24"],
+      "acceptanceCriteria": [
+        "All modules in TypeScript",
+        "No any types",
+        "Strict mode enabled"
+      ]
+    },
+    {
+      "id": "26",
+      "title": "Add syntax highlighting for Power Fx",
+      "description": "Implement Monaco editor configuration for Power Fx syntax",
+      "phase": 5,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "3 hours",
+      "dependencies": ["25"],
+      "acceptanceCriteria": [
+        "Power Fx syntax highlighted",
+        "Custom theme support",
+        "Language features configured"
+      ]
+    },
+    {
+      "id": "27",
+      "title": "Add auto-completion support",
+      "description": "Implement IntelliSense for Power Fx formulas",
+      "phase": 5,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "4 hours",
+      "dependencies": ["26"],
+      "acceptanceCriteria": [
+        "Function suggestions",
+        "Parameter hints",
+        "Documentation tooltips"
+      ]
+    },
+    {
+      "id": "28",
+      "title": "Create Chrome/Edge extension manifest",
+      "description": "Package as browser extension with proper manifest.json",
+      "phase": 5,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "2 hours",
+      "dependencies": ["23"],
+      "acceptanceCriteria": [
+        "Valid manifest.json",
+        "Extension icons created",
+        "Permissions configured"
+      ]
+    },
+    {
+      "id": "29",
+      "title": "Create NPM package",
+      "description": "Prepare and publish package to NPM registry",
+      "phase": 5,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "1 hour",
+      "dependencies": ["23", "25"],
+      "acceptanceCriteria": [
+        "Package.json configured",
+        "README for NPM",
+        "Published to registry"
+      ]
+    },
+    {
+      "id": "30",
+      "title": "Setup GitHub Actions CI/CD",
+      "description": "Create automated build and test pipeline",
+      "phase": 5,
+      "priority": "LOW",
+      "status": "pending",
+      "estimatedTime": "1.5 hours",
+      "dependencies": ["19", "21"],
+      "acceptanceCriteria": [
+        "Tests run on PR",
+        "Automated releases",
+        "Coverage reports"
+      ]
+    }
+  ]
+}
